@@ -1,0 +1,19 @@
+﻿using Microsoft.EntityFrameworkCore;
+using SmartGallery.Core.Entities;
+using System.Reflection;
+
+namespace SmartGallery.Repository.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public DbSet<Service> Services { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public AppDbContext(DbContextOptions<AppDbContext> options)
+            : base(options) { }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+    }
+}
