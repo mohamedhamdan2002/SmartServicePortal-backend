@@ -42,7 +42,7 @@ namespace SmartGallery.Repository
 
         public async Task<TResult?> GetBySpecAsync<TResult>(ISpecification<TEntity, TResult> specification)
         {
-            return await ApplaySpecifictaions<TResult>(specification).FirstOrDefaultAsync();
+            return await ApplaySpecifictaions(specification).FirstOrDefaultAsync();
         }
 
         public void Update(TEntity entity)
