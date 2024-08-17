@@ -23,6 +23,14 @@ namespace SmartGallery.Api.Controllers
             var data = result.GetData<Pagination<ServiceDto>>();
             return Ok(data);
         }
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceDto>> GetServiceById(int id)
+        {
+            var result = await _service.GetServiceById(id);
+            if (result.IsFailure)
+                return HandleError(result.Error);
+            return Ok(result.GetData<ServiceDto>());
+        }
 
 
     }

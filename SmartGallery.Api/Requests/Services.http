@@ -1,0 +1,3 @@
+@url = https://localhost:7078/api
+@id = 20
+GET {{url}}/services/{{id}}

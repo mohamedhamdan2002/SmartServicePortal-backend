@@ -30,5 +30,14 @@ namespace SmartGallery.Service.Implementation
             };
             return Result<Pagination<ServiceDto>>.Success(data);
         }
+
+        public async Task<Result> GetServiceById(int id)
+        {
+            var spec = new ServiceSpecification(id);
+            var service = await _repositoryManager.ServiceRepository.GetBySpecAsync(spec);
+            if (service is null)
+                return ApplicationErrors.NotFoundError;
+            return Result<ServiceDto>.Success(service);
+        }
     }
 }

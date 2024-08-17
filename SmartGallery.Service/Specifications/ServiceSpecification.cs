@@ -13,17 +13,9 @@ namespace SmartGallery.Service.Specifications
 
             )
         {
-            AddInclude(servic => servic.Category);
+            AddInclude(service => service.Category);
             ApplySort(specParams.Sort);
-            Selector = service => new ServiceDto
-            {
-                Id = service.Id,
-                Category = service.Category.Name,
-                Name = service.Name,
-                Cost = service.Cost,
-                Description = service.Description,
-                PictureUrl = service.PictureUrl
-            };
+            AddSelector();
             AddPagination(specParams.PageSize, specParams.PageIndex);
         }
         private void ApplySort(string? sort)
@@ -42,6 +34,24 @@ namespace SmartGallery.Service.Specifications
                     OrderBy = service => service.Name;
                     break;
             }
+        }
+        private void AddSelector()
+        {
+            Selector = service => new ServiceDto
+            {
+                Id = service.Id,
+                Category = service.Category.Name,
+                Name = service.Name,
+                Cost = service.Cost,
+                Description = service.Description,
+                PictureUrl = service.PictureUrl
+            };
+        }
+        public ServiceSpecification(int id)
+            : base(service => service.Id == id)
+        {
+            AddInclude(service => service.Category);
+            AddSelector();
         }
 
     }
