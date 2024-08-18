@@ -15,7 +15,7 @@ namespace SmartGallery.Repository.Data
         public static async Task InitializeAsync(AppDbContext dbContext)
         {
 
-        await SetData<Category>(dbContext, $"{_direcotry}/categories.json");
+            await SetData<Category>(dbContext, $"{_direcotry}/categories.json");
             await SetData<Service>(dbContext, $"{_direcotry}/services.json");
 
         }

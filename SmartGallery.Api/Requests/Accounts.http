@@ -1,0 +1,13 @@
+@url = https://localhost:7078/api
+POST {{url}}/accounts/register
+
+Content-Type: application/json
+
+{
+  "firstName": "mohamed",
+  "lastName": "elsaidy",
+  "email": "mohamedelsaidy@gmail.com",
+  "phoneNumber": "01122334455",
+  "address": "zefta",
+  "password": "Pa$$w0rd"
+}
