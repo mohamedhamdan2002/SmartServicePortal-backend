@@ -23,7 +23,7 @@ namespace SmartGallery.Api.Extensions
             services.AddScoped<IServiceService, ServiceService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IAuthService, AuthService>();
-
+            services.AddScoped<IReservationService, ReservationService>();
             return services;
         }
         private static void ConfigureAppDbContext(this IServiceCollection services, IConfiguration configuration)

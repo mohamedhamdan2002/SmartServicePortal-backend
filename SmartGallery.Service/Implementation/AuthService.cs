@@ -4,6 +4,7 @@ using SmartGallery.Core.Entities;
 using SmartGallery.Core.Errors;
 using SmartGallery.Service.Contracts;
 using SmartGallery.Service.Dtos.UserDtos;
+using System.Security.Claims;
 
 namespace SmartGallery.Service.Implementation
 {
@@ -61,5 +62,6 @@ namespace SmartGallery.Service.Implementation
             };
             return Result<UserDto>.Success(userToReturn);
         }
+   
     }
 }

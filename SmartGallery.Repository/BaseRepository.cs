@@ -39,6 +39,8 @@ namespace SmartGallery.Repository
             return await ApplaySpecifictaions(specification).ToListAsync();
         }
 
+        public async Task<TEntity?> GetByIdAsync(int id)
+            => await _dbContext.Set<TEntity>().FindAsync(id);
 
         public async Task<TResult?> GetBySpecAsync<TResult>(ISpecification<TEntity, TResult> specification)
         {

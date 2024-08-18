@@ -35,6 +35,6 @@ namespace SmartGallery.Api.Controllers
             //return Ok(result.GetData<UserDto>());
             return HandleResult<UserDto>(result);
         }
-
+        
     }
 }

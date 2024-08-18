@@ -22,7 +22,8 @@ namespace SmartGallery.Repository
         public IRepository<Service> ServiceRepository => GetRepository<Service>();
 
         public IRepository<Category> CategoryRepository => GetRepository<Category>();
-  
+
+        public IRepository<Reservation> ReservationRepository => GetRepository<Reservation>();
         private IRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity
         {
             var type = typeof(TEntity).Name;

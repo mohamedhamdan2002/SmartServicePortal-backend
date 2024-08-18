@@ -1,5 +1,6 @@
 ﻿using SmartGallery.Core.Errors;
 using SmartGallery.Service.Dtos.UserDtos;
+using System.Security.Claims;
 
 namespace SmartGallery.Service.Contracts
 {
