@@ -18,9 +18,8 @@ namespace SmartGallery.Api.Controllers
         [HttpPost("{serviceId}")]
         public async Task<ActionResult<ReservationDto>> CreateReservation(int serviceId)
         {
-            var customerEmail = User.FindFirstValue(ClaimTypes.Email);
-            if (customerEmail == null) return BadRequest();
-            var result = await _reservationService.CreateReservationAsync(serviceId, customerEmail);
+            var customerId = "d18a4959-cf62-4955-b3d6-8a380a55a95d";
+            var result = await _reservationService.CreateReservationAsync(serviceId, customerId);
             return HandleResult<ReservationDto>(result);
         }
     }

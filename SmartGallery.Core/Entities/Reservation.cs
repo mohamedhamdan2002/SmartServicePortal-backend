@@ -2,7 +2,8 @@
 {
     public class Reservation : BaseEntity
     {
-        public string CustomerEmail { get; set; }
+        public string CustomerId { get; set; }
+        public User Customer { get; set; }
         public int ServiceId { get; set; }
         public Service Service { get; set; }
         public StatusEnum Status { get; set; } = StatusEnum.Pending;

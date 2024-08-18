@@ -15,14 +15,14 @@ namespace SmartGallery.Service.Implementation
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<Result> CreateReservationAsync(int serviceId, string customerEmail)
+        public async Task<Result> CreateReservationAsync(int serviceId, string customerId)
         {
             var service = await _repositoryManager.ServiceRepository.GetByIdAsync(serviceId);
             if (service is null)
                 return ApplicationErrors.BadRequestError;
             var reservation = new Reservation
             {
-                CustomerEmail = customerEmail,
+                CustomerId = customerId,
                 ServiceId = serviceId
             };
             await _repositoryManager.ReservationRepository.CreateAsync(reservation);
