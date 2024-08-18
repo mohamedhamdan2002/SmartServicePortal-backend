@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SmartGallery.Core.Errors;
+﻿using Microsoft.AspNetCore.Mvc;
 using SmartGallery.Service.Contracts;
 using SmartGallery.Service.Dtos.UserDtos;
 

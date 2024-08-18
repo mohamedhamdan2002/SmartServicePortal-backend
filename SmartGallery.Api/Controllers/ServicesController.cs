@@ -27,9 +27,10 @@ namespace SmartGallery.Api.Controllers
         public async Task<ActionResult<ServiceDto>> GetServiceById(int id)
         {
             var result = await _service.GetServiceById(id);
-            if (result.IsFailure)
-                return HandleError(result.Error);
-            return Ok(result.GetData<ServiceDto>());
+            //if (result.IsFailure)
+            //    return HandleError(result.Error);
+            //return Ok(result.GetData<ServiceDto>());
+            return HandleResult<ServiceDto>(result);
         }
 
 
