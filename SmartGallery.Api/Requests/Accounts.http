@@ -11,3 +11,12 @@ Content-Type: application/json
   "address": "zefta",
   "password": "Pa$$w0rd"
 }
+###
+POST {{url}}/accounts/login
+
+Content-Type: application/json
+
+{
+  "email": "mohamedelsaidy@gmail.com",
+  "password": "Pa$$w0rd"
+}

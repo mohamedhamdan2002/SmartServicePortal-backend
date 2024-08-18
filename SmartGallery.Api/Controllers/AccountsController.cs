@@ -18,11 +18,25 @@ namespace SmartGallery.Api.Controllers
         public async Task<ActionResult<UserDto>> Register([FromBody] UserForRegisterDto registerDto)
         {
             var result = await _authService.RegisterAsync(registerDto);
-            
-            if (result.IsFailure)
-                return HandleError(result.Error);
 
-            return Ok(result.GetData<UserDto>());
+            //if (result.IsFailure)
+            //    return HandleError(result.Error);
+
+            //return Ok(result.GetData<UserDto>());
+            return HandleResult<UserDto>(result);
         }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserDto>> Login([FromBody] UserForLoginDto loginDto)
+        {
+            var result = await _authService.LoginAsync(loginDto);
+
+            //if (result.IsFailure)
+            //    return HandleError(result.Error);
+
+            //return Ok(result.GetData<UserDto>());
+            return HandleResult<UserDto>(result);
+        }
+
     }
 }

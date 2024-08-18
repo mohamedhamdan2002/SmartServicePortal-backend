@@ -14,8 +14,16 @@ namespace SmartGallery.Api.Controllers
             {
                 StatusCodes.Status404NotFound => NotFound(error),
                 StatusCodes.Status400BadRequest => BadRequest(error),
+                StatusCodes.Status401Unauthorized => Unauthorized(error),
                 _ => throw new NotImplementedException()
             }; ;
-        } 
+        }
+        public ActionResult HandleResult<TResult>(Result result)
+        {
+            if (result.IsFailure)
+                return HandleError(result.Error);
+
+            return Ok(result.GetData<TResult>());
+        }
     }
 }

@@ -44,7 +44,22 @@ namespace SmartGallery.Service.Implementation
 
         public async Task<bool> CheckIfEmailExists(string email)
             => await _userManager.Users.AnyAsync(user => user.Email == email);
-    
 
+        public async Task<Result> LoginAsync(UserForLoginDto userForLoginDto)
+        {
+            var user = await _userManager.FindByEmailAsync(userForLoginDto.Email);
+            if (user is null) return ApplicationErrors.UnauthorizedError;
+            var result = await _userManager.CheckPasswordAsync(user, userForLoginDto.Password);
+            if (!result)
+                return ApplicationErrors.UnauthorizedError;
+
+            var userToReturn = new UserDto
+            {
+                Email = user.Email!,
+                FullName = $"{user.FirstName} {user.LastName}",
+                Token = "klajsklfjalkjflakjdfkjakldfjlaksfjkladsjfklasj"
+            };
+            return Result<UserDto>.Success(userToReturn);
+        }
     }
 }
