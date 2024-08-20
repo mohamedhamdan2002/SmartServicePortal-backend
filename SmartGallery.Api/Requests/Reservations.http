@@ -2,3 +2,9 @@
 @url = https://localhost:7078/api
 @servicdId = 2
 POST {{url}}/reservations/{{servicdId}}
+
+Content-Type: application/json
+
+{
+  "problemDescription": "their is a chair was broken and i want to fix it"
+}

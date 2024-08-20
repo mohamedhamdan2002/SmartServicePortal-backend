@@ -15,7 +15,7 @@ namespace SmartGallery.Service.Implementation
             _repositoryManager = repositoryManager;
         }
 
-        public async Task<Result> CreateReservationAsync(int serviceId, string customerId)
+        public async Task<Result> CreateReservationAsync(int serviceId, string customerId, ReservationForCreationDto reservationForCreationDto)
         {
             var service = await _repositoryManager.ServiceRepository.GetByIdAsync(serviceId);
             if (service is null)
@@ -23,8 +23,28 @@ namespace SmartGallery.Service.Implementation
             var reservation = new Reservation
             {
                 CustomerId = customerId,
-                ServiceId = serviceId
+                ServiceId = serviceId,
+                ProblemDescription = reservationForCreationDto.ProblemDescription
             };
+            if (reservationForCreationDto.AddressDto is not null)
+            {
+                reservation.Address = new Address
+                {
+                    City = reservationForCreationDto.AddressDto.City,
+                    Street = reservationForCreationDto.AddressDto.Street,
+                    Country = reservationForCreationDto.AddressDto.Country
+                };
+            }
+            
+            if(reservationForCreationDto.ContactDto is not null)
+            {
+                reservation.Contact = new Contact
+                {
+                    FirstName = reservationForCreationDto.ContactDto.FirstName,
+                    LastName = reservationForCreationDto.ContactDto.LastName
+                };
+            }
+
             await _repositoryManager.ReservationRepository.CreateAsync(reservation);
             await _repositoryManager.SaveChangesAsync();
             var reservationDto = new ReservationDto

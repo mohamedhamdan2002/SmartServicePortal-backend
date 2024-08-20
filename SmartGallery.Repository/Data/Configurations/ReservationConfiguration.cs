@@ -27,6 +27,9 @@ namespace SmartGallery.Repository.Data.Configurations
             builder.HasOne(reservation => reservation.Customer)
                 .WithMany()
                 .HasForeignKey(reservation => reservation.CustomerId);
+            
+            builder.OwnsOne(reservation => reservation.Address);
+            builder.OwnsOne(reservation => reservation.Contact);
         }
     }
 }

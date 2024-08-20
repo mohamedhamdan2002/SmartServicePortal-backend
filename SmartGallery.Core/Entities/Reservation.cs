@@ -8,7 +8,9 @@
         public Service Service { get; set; }
         public StatusEnum Status { get; set; } = StatusEnum.Pending;
         public DateTime ReservationDate { get; set; } = DateTime.UtcNow;
-
+        public string ProblemDescription { get; set; }
+        public Address? Address { get; set; }
+        public Contact? Contact { get; set; }
     }
 
 }
