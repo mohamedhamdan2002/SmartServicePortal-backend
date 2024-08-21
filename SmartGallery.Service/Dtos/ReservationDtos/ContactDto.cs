@@ -1,4 +1,8 @@
-﻿namespace SmartGallery.Service.Dtos.ReservationDtos
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+
+namespace SmartGallery.Service.Dtos.ReservationDtos
 {
     public record ContactDto
     {

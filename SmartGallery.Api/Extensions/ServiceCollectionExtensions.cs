@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SmartGallery.Api.Utilities;
 using SmartGallery.Core.Entities;
 using SmartGallery.Core.Repositories;
@@ -7,6 +9,8 @@ using SmartGallery.Repository;
 using SmartGallery.Repository.Data;
 using SmartGallery.Service.Contracts;
 using SmartGallery.Service.Implementation;
+using SmartGallery.Service.Utilities;
+using System.Text;
 
 namespace SmartGallery.Api.Extensions
 {
@@ -16,6 +20,8 @@ namespace SmartGallery.Api.Extensions
         {
             services.ConfigureAppDbContext(configuration);
             services.ConfigureIdentity();
+            services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
+            services.ConfigureJWT(configuration);
             services.ConfigurePolicyCors();
             services.ConfigureSwagger();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
@@ -60,8 +66,28 @@ namespace SmartGallery.Api.Extensions
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>();
         }
-
-
-
+        private static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
+        {
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(nameof(JwtSettings), jwtSettings);
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(opt =>
+            {
+         
+                opt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = jwtSettings.ValidIssuer,
+                    ValidAudience = jwtSettings.ValidAudience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecreteKey))
+                };
+            });
+        }
     }
 }
