@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SmartGallery.Core.Specifications
 {
-    public interface ISpecification<TEntity, TResult> : IBaseSpecification<TEntity> where TEntity : BaseEntity
+    public interface ISpecification<TEntity, TResult> : IBaseSpecification<TEntity> where TEntity : IEntity
     {
         Expression<Func<TEntity, TResult>>? Selector { get; set; }
     }

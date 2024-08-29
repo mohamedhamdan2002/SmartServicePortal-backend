@@ -3,6 +3,7 @@ using SmartGallery.Core.Errors;
 using SmartGallery.Core.Repositories;
 using SmartGallery.Service.Contracts;
 using SmartGallery.Service.Dtos.ReservationDtos;
+using SmartGallery.Service.Specifications;
 
 namespace SmartGallery.Service.Implementation
 {
@@ -55,6 +56,15 @@ namespace SmartGallery.Service.Implementation
                 Status = reservation.Status.ToString()
             };
             return Result<ReservationDto>.Success(reservationDto);
+        }
+
+        public async Task<Result> GetReservationsForUserAsync(string customerId)
+        {
+            if (customerId is null)
+                return ApplicationErrors.BadRequestError;
+            var spec = new ReservationSpecification(customerId);
+            var reservations = await _repositoryManager.ReservationRepository.GetAllAsync(spec);
+            return Result<IEnumerable<ReservationDto>>.Success(reservations);
         }
     }
 }

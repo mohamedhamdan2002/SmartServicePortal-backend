@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace SmartGallery.Core.Specifications
 {
-    public class Specification<TEntity, TResult> : BaseSpecification<TEntity>, ISpecification<TEntity, TResult> where TEntity : BaseEntity
+    public class Specification<TEntity, TResult> : BaseSpecification<TEntity>, ISpecification<TEntity, TResult> where TEntity : IEntity
     {
 
         public Expression<Func<TEntity, TResult>>? Selector { get; set; }

@@ -1,4 +1,5 @@
-﻿using SmartGallery.Core.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using SmartGallery.Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SmartGallery.Core.Specifications
 {
-    public class BaseSpecification<TEntity> : IBaseSpecification<TEntity> where TEntity : BaseEntity
+    public class BaseSpecification<TEntity> : IBaseSpecification<TEntity> where TEntity : IEntity
     {
         public Expression<Func<TEntity, bool>>? Predicate { get; set; }
 

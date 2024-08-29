@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartGallery.Core.Entities
 {
-    public class BaseEntity
+    public class BaseEntity : IEntity
     {
         public int Id { get; set; }
     }

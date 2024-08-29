@@ -10,6 +10,6 @@ namespace SmartGallery.Service.Dtos.CategoryDtos
         int Id,
         string Name
     );
-
+   
 
 }

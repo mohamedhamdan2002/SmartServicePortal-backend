@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace SmartGallery.Core.Specifications
 {
-    public interface IBaseSpecification<TEntity> where TEntity : BaseEntity
+    public interface IBaseSpecification<TEntity> where TEntity :  IEntity
     {
         Expression<Func<TEntity, bool>>? Predicate { get; set; }
         ICollection<Expression<Func<TEntity, object>>> Includes { get; }

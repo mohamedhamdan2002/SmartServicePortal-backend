@@ -2,7 +2,7 @@
 
 namespace SmartGallery.Core.Entities
 {
-    public class User : IdentityUser
+    public class User : IdentityUser, IEntity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

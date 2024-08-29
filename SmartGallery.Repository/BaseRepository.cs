@@ -4,10 +4,11 @@ using SmartGallery.Core.Repositories;
 using SmartGallery.Core.Specifications;
 using SmartGallery.Repository.Data;
 using System.Linq.Expressions;
+using SmartGallery.Core;
 
 namespace SmartGallery.Repository
 {
-    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+    public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity, IEntity
     {
         private readonly AppDbContext _dbContext;
 

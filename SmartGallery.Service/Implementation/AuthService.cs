@@ -6,6 +6,8 @@ using SmartGallery.Core.Entities;
 using SmartGallery.Core.Errors;
 using SmartGallery.Service.Contracts;
 using SmartGallery.Service.Dtos.UserDtos;
+using SmartGallery.Service.Extensions;
+using SmartGallery.Service.Specifications;
 using SmartGallery.Service.Utilities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -103,6 +105,18 @@ namespace SmartGallery.Service.Implementation
                     expires: DateTime.Now.AddHours(_jwtSettings.Expire),
                     signingCredentials: signingCredentials
                 );
+        }
+
+        public async Task<Result> GetUserByEmailAsync(string email)
+        {
+            if (email is null)
+                return ApplicationErrors.BadRequestError;
+            var spec = new UserSpecification(email);
+            var user = await _userManager.GetUserWithSpec(spec);
+            if (user is null)
+                return ApplicationErrors.BadRequestError;
+
+            return Result<UserProfileDto>.Success(user);
         }
     }
 }
