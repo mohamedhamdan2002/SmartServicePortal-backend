@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartGallery.Service.Contracts;
 using SmartGallery.Service.Dtos.UserDtos;
+using System.Security.Claims;
 
 namespace SmartGallery.Api.Controllers
 {
@@ -35,6 +37,16 @@ namespace SmartGallery.Api.Controllers
             //return Ok(result.GetData<UserDto>());
             return HandleResult<UserDto>(result);
         }
+
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<ActionResult<UserProfileDto>> GetProfileForCurrentUser()
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            var result = await _authService.GetUserByEmailAsync(email!);          
+            return HandleResult<UserProfileDto>(result);
+        }
+
         
     }
 }

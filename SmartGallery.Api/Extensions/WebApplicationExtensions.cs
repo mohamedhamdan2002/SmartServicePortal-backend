@@ -17,7 +17,6 @@ namespace SmartGallery.Api.Extensions
                     await dbContext.Database.MigrateAsync();
                     await DataInitializer.InitializeAsync(dbContext);
                
-              
                 }
                 catch (Exception ex)
                 {

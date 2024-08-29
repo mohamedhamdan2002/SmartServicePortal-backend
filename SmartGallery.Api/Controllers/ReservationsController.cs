@@ -24,5 +24,12 @@ namespace SmartGallery.Api.Controllers
             var result = await _reservationService.CreateReservationAsync(serviceId, customerId, reservation);
             return HandleResult<ReservationDto>(result);
         }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ReservationDto>>> GetReservationsForCurrentUser()
+        {
+            var customerId = User.FindFirstValue("uid");
+            var result = await _reservationService.GetReservationsForUserAsync(customerId!);
+            return HandleResult<IEnumerable<ReservationDto>>(result);
+        }
     }
 }

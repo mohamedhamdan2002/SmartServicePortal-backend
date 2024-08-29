@@ -23,6 +23,13 @@ namespace SmartGallery.Api.Controllers
             var data = result.GetData<Pagination<ServiceDto>>();
             return Ok(data);
         }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<ServiceDto>>> GetAllServices([FromQuery] SpecificationParameter specParams)
+        //{
+        //    var result = await _service.GetAllServicesAsync(specParams);
+        //    var data = result.GetData<Pagination<ServiceDto>>();
+        //    return Ok(data.Data);
+        //}
         [HttpGet("{id}")]
         public async Task<ActionResult<ServiceDto>> GetServiceById(int id)
         {
