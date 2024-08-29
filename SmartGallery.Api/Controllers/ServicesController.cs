@@ -39,7 +39,29 @@ namespace SmartGallery.Api.Controllers
             //return Ok(result.GetData<ServiceDto>());
             return HandleResult<ServiceDto>(result);
         }
+        [HttpPost]
 
+        public async Task<ActionResult<ServiceDto>> CreateService(ServiceForCreateDto service)
+        {
+            var result = await _service.CreateServiceAsync(service);
+            return HandleResult<ServiceDto>(result);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateService(int id, ServiceForUpdateDto service)
+        {
+            var result = await _service.UpdateServiceAsync(id, service);
+            if (result.IsFailure)
+                return HandleError(result.Error);
+            return NoContent();
+        }
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteService(int id)
+        {
+            var result = await _service.DeleteServiceAsync(id);
+            if (result.IsFailure)
+                return HandleError(result.Error);
+            return NoContent();
+        }
 
     }
 }
