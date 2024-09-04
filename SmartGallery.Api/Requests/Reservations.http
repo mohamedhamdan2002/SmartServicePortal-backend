@@ -8,3 +8,6 @@ Content-Type: application/json
 {
   "problemDescription": "their is a chair was broken and i want to fix it"
 }
+
+###
+GET {{url}}/reservations/

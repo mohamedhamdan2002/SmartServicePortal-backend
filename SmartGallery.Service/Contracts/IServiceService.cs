@@ -1,4 +1,5 @@
-﻿using SmartGallery.Core.Errors;
+﻿using Microsoft.AspNetCore.Http;
+using SmartGallery.Core.Errors;
 using SmartGallery.Service.Dtos.ServiceDtos;
 using SmartGallery.Service.Specifications;
 

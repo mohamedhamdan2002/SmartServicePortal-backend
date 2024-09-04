@@ -1,4 +1,6 @@
-﻿using SmartGallery.Core.Entities;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using SmartGallery.Core.Entities;
 using SmartGallery.Core.Errors;
 using SmartGallery.Core.Repositories;
 using SmartGallery.Service.Contracts;
@@ -11,11 +13,14 @@ namespace SmartGallery.Service.Implementation
 {
     public class ServiceService : IServiceService
     {
+        private const string baseUrl = "http://localhost:5217/";
         private readonly IRepositoryManager _repositoryManager;
+        private readonly IWebHostEnvironment _env;
 
-        public ServiceService(IRepositoryManager repositoryManager)
+        public ServiceService(IRepositoryManager repositoryManager, IWebHostEnvironment env)
         {
             _repositoryManager = repositoryManager;
+            _env = env;
         }
 
         public async Task<Result> CreateServiceAsync(ServiceForCreateDto serviceForCreate)
@@ -23,12 +28,15 @@ namespace SmartGallery.Service.Implementation
             var category = await _repositoryManager.CategoryRepository.GetByIdAsync(serviceForCreate.CategoryId);
             if (category is null)
                 return ApplicationErrors.BadRequestError;
+            var pictureUrl = await HandleServicePictureAsync(serviceForCreate.Picture);
+            if(pictureUrl == string.Empty)
+                return ApplicationErrors.BadRequestError;
             var service = new Core.Entities.Service()
             {
                 CategoryId = category.Id,
                 Cost = serviceForCreate.Cost,
                 Description = serviceForCreate.Description,
-                PictureUrl = serviceForCreate.PictureUrl,
+                PictureUrl = pictureUrl,
                 Name = serviceForCreate.Name
             };
             await _repositoryManager.ServiceRepository.CreateAsync(service);
@@ -38,7 +46,8 @@ namespace SmartGallery.Service.Implementation
                 Id = service.Id,
                 Name = service.Name,
                 Category = category.Name,
-                PictureUrl = service.PictureUrl,
+                CategoryId = category.Id,
+                PictureUrl = $"{baseUrl}{service.PictureUrl}",
                 Description = service.Description,
                 Cost = service.Cost
             };
@@ -51,6 +60,7 @@ namespace SmartGallery.Service.Implementation
             var service = await _repositoryManager.ServiceRepository.GetByIdAsync(id);
             if (service is null)
                 return ApplicationErrors.BadRequestError;
+            DeleteServicePicture(service.PictureUrl);
             _repositoryManager.ServiceRepository.Delete(service);
             await _repositoryManager.SaveChangesAsync();
             return Result.Success();   
@@ -93,12 +103,36 @@ namespace SmartGallery.Service.Implementation
                     return ApplicationErrors.BadRequestError;
                 service.CategoryId = category.Id;
             }
+            DeleteServicePicture(service.PictureUrl);
+            var pictureUrl = await HandleServicePictureAsync(serviceForUpdate.Picture);
+            if (pictureUrl == string.Empty)
+                return ApplicationErrors.BadRequestError;
             service.Name = serviceForUpdate.Name;
             service.Cost = serviceForUpdate.Cost;
-            service.PictureUrl = serviceForUpdate.PictureUrl;
+            service.PictureUrl = pictureUrl;
             service.Description = serviceForUpdate.Description;
             await _repositoryManager.SaveChangesAsync();
             return Result.Success();
+        }
+
+        private async Task<string> HandleServicePictureAsync(IFormFile picture)
+        {
+            if (picture == null)
+                return string.Empty;
+            var uploadsFoldder = Path.Combine(_env.WebRootPath, "images");
+            var uniqueFileName = $"{Guid.NewGuid().ToString()[..5]}_{picture.FileName}";  
+            var filePath = Path.Combine(uploadsFoldder, uniqueFileName);
+            using(var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await picture.CopyToAsync(fileStream);
+            }
+            return $"images/{uniqueFileName}";
+        }
+        private void DeleteServicePicture(string pictureUrl)
+        {
+            var filePath = Path.Combine(_env.WebRootPath, pictureUrl);
+            if(File.Exists(filePath))
+                File.Delete(filePath);
         }
     }
 }

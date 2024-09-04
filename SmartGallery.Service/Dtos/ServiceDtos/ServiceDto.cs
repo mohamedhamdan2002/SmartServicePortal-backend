@@ -8,5 +8,6 @@
         public string PictureUrl { get; init; }
         public decimal Cost { get; init; }
         public string Category { get; init; }
+        public int CategoryId { get; init; }
     }
 }

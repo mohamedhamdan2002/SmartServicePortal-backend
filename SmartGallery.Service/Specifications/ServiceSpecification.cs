@@ -44,7 +44,8 @@ namespace SmartGallery.Service.Specifications
                 Name = service.Name,
                 Cost = service.Cost,
                 Description = service.Description,
-                PictureUrl = service.PictureUrl
+                PictureUrl = $"http://localhost:5217/{service.PictureUrl}",
+                CategoryId = service.CategoryId,
             };
         }
         public ServiceSpecification(int id)

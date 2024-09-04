@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartGallery.Service.Dtos.ServiceDtos
 {
@@ -8,7 +9,7 @@ namespace SmartGallery.Service.Dtos.ServiceDtos
         public string Name { get; init; }
         [Required]
         public string Description { get; init; }
-        public string PictureUrl { get; init; }
+        public IFormFile Picture { get; init; }
         [Required]
         public decimal Cost { get; init; }
         [Required]

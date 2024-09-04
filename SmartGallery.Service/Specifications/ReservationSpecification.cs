@@ -1,11 +1,7 @@
 ﻿using SmartGallery.Core.Entities;
 using SmartGallery.Core.Specifications;
 using SmartGallery.Service.Dtos.ReservationDtos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace SmartGallery.Service.Specifications
 {

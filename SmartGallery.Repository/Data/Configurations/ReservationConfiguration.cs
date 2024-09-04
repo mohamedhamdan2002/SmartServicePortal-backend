@@ -31,6 +31,7 @@ namespace SmartGallery.Repository.Data.Configurations
             
             builder.OwnsOne(reservation => reservation.Address);
             builder.OwnsOne(reservation => reservation.Contact);
+            builder.ToTable("Reservations");
         }
     }
 }

@@ -13,5 +13,6 @@ namespace SmartGallery.Service.Contracts
     {
         Task<Result> CreateReservationAsync(int serviceId, string customerId, ReservationForCreationDto reservationForCreationDto);
         Task<Result> GetReservationsForUserAsync(string customerId);
+        Task<Result> GetAllReservations();
     }
 }

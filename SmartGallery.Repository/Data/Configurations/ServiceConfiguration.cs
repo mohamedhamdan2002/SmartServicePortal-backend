@@ -19,7 +19,10 @@ namespace SmartGallery.Repository.Data.Configurations
             builder.HasOne(service => service.Category)
                    .WithMany()
                    .HasForeignKey(service => service.CategoryId);
-                       
+
+            builder.HasMany(service => service.Reviews)
+                .WithOne()
+                .HasForeignKey(review => review.ServiceId);
         }
     }
 }

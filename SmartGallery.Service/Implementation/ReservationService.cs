@@ -58,6 +58,13 @@ namespace SmartGallery.Service.Implementation
             return Result<ReservationDto>.Success(reservationDto);
         }
 
+        public async Task<Result> GetAllReservations()
+        {
+            var spec = new ReservationWithDetailsSpecification();
+            var resvations = await _repositoryManager.ReservationRepository.GetAllAsync(spec);
+            return Result<IEnumerable<ReservationDetailsDto>>.Success(resvations);
+        }
+
         public async Task<Result> GetReservationsForUserAsync(string customerId)
         {
             if (customerId is null)

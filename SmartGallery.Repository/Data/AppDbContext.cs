@@ -9,6 +9,8 @@ namespace SmartGallery.Repository.Data
     {
         public DbSet<Service> Services { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Review> Reviews { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

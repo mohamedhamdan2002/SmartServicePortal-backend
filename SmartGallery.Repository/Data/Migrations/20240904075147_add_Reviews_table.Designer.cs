@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartGallery.Repository.Data;
 
@@ -11,9 +12,11 @@ using SmartGallery.Repository.Data;
 namespace SmartGallery.Repository.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240904075147_add_Reviews_table")]
+    partial class add_Reviews_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -205,7 +208,7 @@ namespace SmartGallery.Repository.Data.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Reservations", (string)null);
+                    b.ToTable("Reservation");
                 });
 
             modelBuilder.Entity("SmartGallery.Core.Entities.Review", b =>
@@ -243,7 +246,7 @@ namespace SmartGallery.Repository.Data.Migrations
 
                     b.HasIndex("ServiceId");
 
-                    b.ToTable("Reviews", (string)null);
+                    b.ToTable("Review");
                 });
 
             modelBuilder.Entity("SmartGallery.Core.Entities.Service", b =>
@@ -441,7 +444,7 @@ namespace SmartGallery.Repository.Data.Migrations
 
                             b1.HasKey("ReservationId");
 
-                            b1.ToTable("Reservations");
+                            b1.ToTable("Reservation");
 
                             b1.WithOwner()
                                 .HasForeignKey("ReservationId");
@@ -466,7 +469,7 @@ namespace SmartGallery.Repository.Data.Migrations
 
                             b1.HasKey("ReservationId");
 
-                            b1.ToTable("Reservations");
+                            b1.ToTable("Reservation");
 
                             b1.WithOwner()
                                 .HasForeignKey("ReservationId");

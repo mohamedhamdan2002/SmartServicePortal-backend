@@ -15,5 +15,6 @@ namespace SmartGallery.Core.Entities
         public decimal Cost { get; set; }
         public int CategoryId { get; set; }
         public Category Category { get; set; }
+        public ICollection<Review>  Reviews { get; set; } = new List <Review>();
     }
 }

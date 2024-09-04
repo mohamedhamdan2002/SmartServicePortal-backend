@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using SmartGallery.Api.Utilities;
 using SmartGallery.Core.Errors;
 
 namespace SmartGallery.Api.Controllers
@@ -18,12 +20,20 @@ namespace SmartGallery.Api.Controllers
                 _ => throw new NotImplementedException()
             }; ;
         }
-        public ActionResult HandleResult<TResult>(Result result)
+        
+        public ActionResult HandleResult<TResult>(Result result, ActionEnum action = ActionEnum.OkResult)
         {
+
             if (result.IsFailure)
                 return HandleError(result.Error);
 
-            return Ok(result.GetData<TResult>());
+            return action switch
+            {
+                ActionEnum.OkResult => Ok(result.GetData<TResult>()),
+                ActionEnum.NoContentResult => NoContent(),
+                ActionEnum.CreatedAtResult => Ok(result.GetData<TResult>()), // will be change
+                _ => throw new NotImplementedException()
+            };
         }
     }
 }
