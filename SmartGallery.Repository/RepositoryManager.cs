@@ -24,6 +24,9 @@ namespace SmartGallery.Repository
         public IRepository<Category> CategoryRepository => GetRepository<Category>();
 
         public IRepository<Reservation> ReservationRepository => GetRepository<Reservation>();
+
+        public IRepository<Review> ReviewRepository => GetRepository<Review>();
+
         private IRepository<TEntity> GetRepository<TEntity>() where TEntity : BaseEntity
         {
             var type = typeof(TEntity).Name;
