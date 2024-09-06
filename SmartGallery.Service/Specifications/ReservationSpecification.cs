@@ -5,7 +5,7 @@ using SmartGallery.Service.Dtos.ReservationDtos;
 
 namespace SmartGallery.Service.Specifications
 {
-    public class ReservationSpecification : Specification<Reservation, ReservationDto>
+    public class ReservationSpecification : SpecificationWithResultType<Reservation, ReservationDto>
     {
         public ReservationSpecification(string customerId) 
             : base(reservation => reservation.CustomerId == customerId) 

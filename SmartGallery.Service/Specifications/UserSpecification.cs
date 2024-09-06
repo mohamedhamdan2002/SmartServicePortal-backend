@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SmartGallery.Service.Specifications
 {
-    public class UserSpecification : Specification<User, UserProfileDto>
+    public class UserSpecification : SpecificationWithResultType<User, UserProfileDto>
     {
         public UserSpecification(string email) : base(user => user.Email == email)
         {

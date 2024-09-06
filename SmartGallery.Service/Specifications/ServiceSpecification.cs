@@ -3,7 +3,7 @@ using SmartGallery.Service.Dtos.ServiceDtos;
 
 namespace SmartGallery.Service.Specifications
 {
-    public class ServiceSpecification : Specification<Core.Entities.Service, ServiceDto>
+    public class ServiceSpecification : SpecificationWithResultType<Core.Entities.Service, ServiceDto>
     {
         public ServiceSpecification(SpecificationParameter specParams)
             : base(

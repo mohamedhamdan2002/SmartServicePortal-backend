@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SmartGallery.Core;
 using SmartGallery.Core.Entities;
 using SmartGallery.Core.Repositories;
 using SmartGallery.Core.Specifications;
 using SmartGallery.Repository.Data;
-using System.Linq.Expressions;
-using SmartGallery.Core;
 
 namespace SmartGallery.Repository
 {
@@ -18,7 +17,7 @@ namespace SmartGallery.Repository
 
         }
 
-        public async Task<int> CountAsync(IBaseSpecification<TEntity> specification)
+        public async Task<int> CountAsync(Specification<TEntity> specification)
             => await ApplaySpecifictaions(specification).CountAsync();
 
 
@@ -35,7 +34,7 @@ namespace SmartGallery.Repository
             return await _dbContext.Set<TEntity>().ToListAsync();
         }
 
-        public async Task<IEnumerable<TResult>> GetAllAsync<TResult>(ISpecification<TEntity, TResult> specification)
+        public async Task<IEnumerable<TResult>> GetAllAsync<TResult>(SpecificationWithResultType<TEntity, TResult> specification)
         {
             return await ApplaySpecifictaions(specification).ToListAsync();
         }
@@ -43,7 +42,7 @@ namespace SmartGallery.Repository
         public async Task<TEntity?> GetByIdAsync(int id)
             => await _dbContext.Set<TEntity>().FindAsync(id);
 
-        public async Task<TResult?> GetBySpecAsync<TResult>(ISpecification<TEntity, TResult> specification)
+        public async Task<TResult?> GetBySpecAsync<TResult>(SpecificationWithResultType<TEntity, TResult> specification)
         {
             return await ApplaySpecifictaions(specification).FirstOrDefaultAsync();
         }
@@ -52,12 +51,12 @@ namespace SmartGallery.Repository
         {
             _dbContext.Update(entity);
         }
-        private IQueryable<TResult> ApplaySpecifictaions<TResult>(ISpecification<TEntity, TResult> specification)
+        private IQueryable<TResult> ApplaySpecifictaions<TResult>(SpecificationWithResultType<TEntity, TResult> specification)
         {
             return _dbContext.Set<TEntity>().GetQuery(specification);
         }
 
-        private IQueryable<TEntity> ApplaySpecifictaions(IBaseSpecification<TEntity> specification)
+        private IQueryable<TEntity> ApplaySpecifictaions(Specification<TEntity> specification)
         {
             return _dbContext.Set<TEntity>().GetQuery(specification);
         }

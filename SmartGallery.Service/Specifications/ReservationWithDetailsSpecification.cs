@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SmartGallery.Service.Specifications
 {
-    public class ReservationWithDetailsSpecification : Specification<Reservation, ReservationDetailsDto>
+    public class ReservationWithDetailsSpecification : SpecificationWithResultType<Reservation, ReservationDetailsDto>
     {
         public ReservationWithDetailsSpecification()
         {

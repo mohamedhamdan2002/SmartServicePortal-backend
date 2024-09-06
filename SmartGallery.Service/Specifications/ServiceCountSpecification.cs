@@ -2,7 +2,7 @@
 
 namespace SmartGallery.Service.Specifications
 {
-    public class ServiceCountSpecification : BaseSpecification<Core.Entities.Service>
+    public class ServiceCountSpecification : Specification<Core.Entities.Service>
     {
         public ServiceCountSpecification(SpecificationParameter specParams)
             : base(service =>

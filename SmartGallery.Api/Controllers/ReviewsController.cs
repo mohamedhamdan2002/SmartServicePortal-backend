@@ -1,12 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SmartGallery.Api.Filters;
 using SmartGallery.Service.Contracts;
 using SmartGallery.Service.Dtos.ReviewDtos;
 
 namespace SmartGallery.Api.Controllers
-{ 
+{
     public class ReviewsController : BaseApiController
     {
         private readonly IReviewService _reviewService;

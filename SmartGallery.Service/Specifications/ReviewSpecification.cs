@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SmartGallery.Service.Specifications
 {
-    public class ReviewSpecification : Specification<Review, ReviewDto>
+    public class ReviewSpecification : SpecificationWithResultType<Review, ReviewDto>
     {
         public ReviewSpecification(int? serviceId)
             : base(review => !serviceId.HasValue || review.ServiceId == serviceId)

@@ -7,13 +7,13 @@ namespace SmartGallery.Core
     public static class SpecificationEvaluator
     {
         private static bool hasSelector = false;
-        public static IQueryable<TResult> GetQuery<TEntity, TResult>(this IQueryable<TEntity> inputQuery, ISpecification<TEntity, TResult> specification) where TEntity : class, IEntity
+        public static IQueryable<TResult> GetQuery<TEntity, TResult>(this IQueryable<TEntity> inputQuery, SpecificationWithResultType<TEntity, TResult> specification) where TEntity : class, IEntity
         {
             hasSelector = true;
             var query = inputQuery.GetQuery<TEntity>(specification);
             return query.Select(specification.Selector);
         }
-        public static IQueryable<TEntity> GetQuery<TEntity>(this IQueryable<TEntity> inputQuery, IBaseSpecification<TEntity> specification) where TEntity : class, IEntity
+        public static IQueryable<TEntity> GetQuery<TEntity>(this IQueryable<TEntity> inputQuery, Specification<TEntity> specification) where TEntity : class, IEntity
         {
             var query = inputQuery;
 
