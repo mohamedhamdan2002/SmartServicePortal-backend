@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using SmartGallery.Api.Infrastructure;
 using SmartGallery.Api.Utilities;
 using SmartGallery.Core.Entities;
 using SmartGallery.Core.Repositories;
@@ -24,6 +25,7 @@ namespace SmartGallery.Api.Extensions
             services.ConfigureJWT(configuration);
             services.ConfigurePolicyCors();
             services.ConfigureSwagger();
+            services.ConfigureGlobalExcptionHandler();
             services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
             services.AddScoped<IRepositoryManager, RepositoryManager>();
             services.AddScoped<IServiceService, ServiceService>();
@@ -89,6 +91,11 @@ namespace SmartGallery.Api.Extensions
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecreteKey))
                 };
             });
+        }
+        private static void ConfigureGlobalExcptionHandler(this IServiceCollection services)
+        {
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+            services.AddProblemDetails();
         }
     }
 }

@@ -23,6 +23,8 @@ namespace SmartGallery.Api.Controllers
         
         public ActionResult HandleResult<TResult>(Result result, ActionEnum action = ActionEnum.OkResult)
         {
+            if(result is null)
+                throw new ArgumentNullException(nameof(result));
 
             if (result.IsFailure)
                 return HandleError(result.Error);

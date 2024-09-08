@@ -1,4 +1,5 @@
 using SmartGallery.Api.Extensions;
+using SmartGallery.Api.Infrastructure;
 using SmartGallery.Api.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddServices(builder.Configuration);
-
 
 var app = builder.Build();
 await app.ApplyMigrationsAndSeedDataAsync();
@@ -19,6 +19,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseExceptionHandler();
 app.UseCors(ApiConstants.MyAppPolicy);
 app.UseAuthorization();
 app.UseStaticFiles();
