@@ -23,7 +23,8 @@ namespace SmartGallery.Service.Specifications
                 Comment = review.Comment,
                 Id = review.Id,
                 Title = review.Title,
-                CustomerName = review.Customer.UserName!
+                CustomerName = review.Customer.UserName!,
+                CreatedAt = review.CreatedAt
             };
         }
     }

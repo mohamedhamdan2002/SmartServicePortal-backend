@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGallery.Service", "src
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EA835043-CA80-4CED-A5D4-C7D58047E942}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGallery.Api.Tests", "tests\SmartGallery.Api.Tests\SmartGallery.Api.Tests.csproj", "{BD7377D8-235E-4AED-844B-107E7B9F352F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGallery.Api.Tests", "tests\SmartGallery.Api.Tests\SmartGallery.Api.Tests.csproj", "{BD7377D8-235E-4AED-844B-107E7B9F352F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmartGallery.Service.Tests", "tests\SmartGallery.Service.Tests\SmartGallery.Service.Tests.csproj", "{1A5DB72C-15DF-4FF0-9CBA-18B3D5EDA1E8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +45,10 @@ Global
 		{BD7377D8-235E-4AED-844B-107E7B9F352F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD7377D8-235E-4AED-844B-107E7B9F352F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD7377D8-235E-4AED-844B-107E7B9F352F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A5DB72C-15DF-4FF0-9CBA-18B3D5EDA1E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A5DB72C-15DF-4FF0-9CBA-18B3D5EDA1E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A5DB72C-15DF-4FF0-9CBA-18B3D5EDA1E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A5DB72C-15DF-4FF0-9CBA-18B3D5EDA1E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -53,6 +59,7 @@ Global
 		{E439C1B5-BA36-4382-8672-9E9C9DE75C9A} = {4EEB7864-0E6C-42A8-B40E-CC0179D8F920}
 		{0C6CAA7B-7925-4473-B093-D33045726512} = {4EEB7864-0E6C-42A8-B40E-CC0179D8F920}
 		{BD7377D8-235E-4AED-844B-107E7B9F352F} = {EA835043-CA80-4CED-A5D4-C7D58047E942}
+		{1A5DB72C-15DF-4FF0-9CBA-18B3D5EDA1E8} = {EA835043-CA80-4CED-A5D4-C7D58047E942}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E4A8A190-94FE-4E04-BCF8-1BA389D31B9A}

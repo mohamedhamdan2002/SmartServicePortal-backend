@@ -38,7 +38,8 @@ namespace SmartGallery.Service.Implementation
                 AsAnonymous = review.AsAnonymous,
                 Comment = review.Comment,
                 Rate = review.Rate,
-                Title = review.Title
+                Title = review.Title,
+                CreatedAt = review.CreatedAt
             };
             return Result<ReviewDto>.Success(reviewDto);
         }
