@@ -14,7 +14,6 @@ public static class WebApplicationExtensions
             {
                 await dbContext.Database.MigrateAsync();
                 await DataInitializer.InitializeAsync(dbContext);
-
             }
             catch (Exception ex)
             {
