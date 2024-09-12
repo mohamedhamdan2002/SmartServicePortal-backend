@@ -30,7 +30,7 @@ public class ReviewService : IReviewService
             Rate = reviewForCreate.Rate,
             ServiceId = reviewForCreate.ServiceId
         };
-        await _repositoryManager.ReviewRepository.CreateAsync(review);
+        _repositoryManager.ReviewRepository.Create(review);
         await _repositoryManager.SaveChangesAsync();
         var reviewDto = new ReviewDto
         {

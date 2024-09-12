@@ -20,8 +20,8 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Base
         => await ApplaySpecifictaions(specification).CountAsync();
 
 
-    public async Task CreateAsync(TEntity entity)
-        => await _dbContext.AddAsync(entity);
+    public async void Create(TEntity entity)
+        => _dbContext.Add(entity);
 
 
     public void Delete(TEntity entity)

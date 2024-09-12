@@ -91,7 +91,7 @@ public class CategoryServiceTests
             Name = categoryForCreateDto.Name
         };
 
-        _repositoryMangerMock.Setup(x => x.CategoryRepository.CreateAsync(It.IsAny<Category>()))
+        _repositoryMangerMock.Setup(x => x.CategoryRepository.Create(It.IsAny<Category>()))
                              .Callback<Category>(c => c.Id = categoryEntity.Id);
         _repositoryMangerMock.Setup(x => x.SaveChangesAsync()).Returns(Task.CompletedTask);
         // act 
@@ -118,7 +118,7 @@ public class CategoryServiceTests
                          .Should()
                          .Be(categoryEntity.Name);
 
-        _repositoryMangerMock.Verify(x => x.CategoryRepository.CreateAsync(It.IsAny<Category>()), Times.Once());
+        _repositoryMangerMock.Verify(x => x.CategoryRepository.Create(It.IsAny<Category>()), Times.Once());
         _repositoryMangerMock.Verify(x => x.SaveChangesAsync(), Times.Once());
     }
 

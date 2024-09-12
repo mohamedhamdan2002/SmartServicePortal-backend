@@ -37,7 +37,7 @@ public class ServiceService : IServiceService
             PictureUrl = pictureUrl,
             Name = serviceForCreate.Name
         };
-        await _repositoryManager.ServiceRepository.CreateAsync(service);
+        _repositoryManager.ServiceRepository.Create(service);
         await _repositoryManager.SaveChangesAsync();
         var serviceDto = new ServiceDto
         {

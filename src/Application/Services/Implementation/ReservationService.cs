@@ -46,7 +46,7 @@ public class ReservationService : IReservationService
             };
         }
 
-        await _repositoryManager.ReservationRepository.CreateAsync(reservation);
+        _repositoryManager.ReservationRepository.Create(reservation);
         await _repositoryManager.SaveChangesAsync();
         var reservationDto = new ReservationDto
         {

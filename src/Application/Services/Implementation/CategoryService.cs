@@ -21,7 +21,7 @@ public class CategoryService : ICategoryService
         {
             Name = category.Name
         };
-        await _repositoryManager.CategoryRepository.CreateAsync(categoryEntity);
+        _repositoryManager.CategoryRepository.Create(categoryEntity);
         await _repositoryManager.SaveChangesAsync();
         var categoryDto = new CategoryDto(categoryEntity.Id, categoryEntity.Name);
         return Result<CategoryDto>.Success(categoryDto);
