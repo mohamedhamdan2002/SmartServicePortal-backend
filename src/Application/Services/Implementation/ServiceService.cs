@@ -64,7 +64,7 @@ public class ServiceService : IServiceService
         return Result.Success();
     }
 
-    public async Task<Result> GetAllServicesAsync(SpecificationParameter specParams)
+    public async Task<Result> GetAllServicesAsync(SpecificationParameters specParams)
     {
         var spec = new ServiceSpecification(specParams);
         var services = await _repositoryManager.ServiceRepository.GetAllAsync(spec);

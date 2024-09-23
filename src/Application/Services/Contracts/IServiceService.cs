@@ -6,7 +6,7 @@ namespace Application.Services.Contracts;
 
 public interface IServiceService
 {
-    Task<Result> GetAllServicesAsync(SpecificationParameter specParams);
+    Task<Result> GetAllServicesAsync(SpecificationParameters specParams);
     Task<Result> GetServiceById(int Id);
     Task<Result> CreateServiceAsync(ServiceForCreateDto serviceForCreate);
     Task<Result> UpdateServiceAsync(int id, ServiceForUpdateDto serviceForUpdate);

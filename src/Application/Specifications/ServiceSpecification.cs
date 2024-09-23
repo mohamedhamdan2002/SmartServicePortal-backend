@@ -5,12 +5,11 @@ namespace Application.Specifications;
 
 public class ServiceSpecification : SpecificationWithResultType<Domain.Entities.Service, ServiceDto>
 {
-    public ServiceSpecification(SpecificationParameter specParams)
+    public ServiceSpecification(SpecificationParameters specParams)
         : base(
             service =>
                         (string.IsNullOrEmpty(specParams.Search) || service.Name.ToLower().Contains(specParams.Search!)) &&
-                        (!specParams.CategoryId.HasValue || service.CategoryId == specParams.CategoryId.Value)
-
+                        (!(specParams.CategoriesIds != null) || specParams.CategoriesIds.Values.Any(value => value == service.CategoryId)) 
         )
     {
         AddInclude(service => service.Category);
@@ -54,5 +53,7 @@ public class ServiceSpecification : SpecificationWithResultType<Domain.Entities.
         AddInclude(service => service.Category);
         AddSelector();
     }
+
+    
 
 }

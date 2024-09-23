@@ -18,7 +18,7 @@ public class ServicesController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ActionResult<Pagination<ServiceDto>>> GetAllServices([FromQuery] SpecificationParameter specParams)
+    public async Task<ActionResult<Pagination<ServiceDto>>> GetAllServices([FromQuery] SpecificationParameters specParams)
     {
         var result = await _service.GetAllServicesAsync(specParams);
         return HandleResult<Pagination<ServiceDto>>(result);
