@@ -4,12 +4,12 @@ using Infrastructure.Data;
 using Domain.Abstractions;
 using Domain.Interfaces;
 namespace Infrastructure.Repositories;
-public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Entity, BaseEntity
+public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : Entity, BaseEntity
 {
     private readonly AppDbContext _dbContext;
     private readonly DbSet<TEntity> _dbSet;
 
-    public BaseRepository(AppDbContext dbContext)
+    public GenericRepository(AppDbContext dbContext)
     {
         _dbContext = dbContext;
         _dbSet = dbContext.Set<TEntity>();
