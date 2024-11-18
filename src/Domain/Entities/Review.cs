@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Abstractions;
 
-public class Review : BaseEntity
+namespace Domain.Entities;
+
+public class Review : Entity
 {
     public string Title { get; set; }
     public string Comment { get; set; }

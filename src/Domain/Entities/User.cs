@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Domain.Abstractions;
+using Microsoft.AspNetCore.Identity;
 
 namespace Domain.Entities;
 
-public class User : IdentityUser, IEntity
+public class User : IdentityUser, BaseEntity
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }

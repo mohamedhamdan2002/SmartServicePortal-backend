@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Abstractions;
 
-public class Category : BaseEntity
+namespace Domain.Entities;
+
+public class Category : Entity
 {
     public string Name { get; set; }
 }

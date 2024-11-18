@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Abstractions;
 
-public class Service : BaseEntity
+namespace Domain.Entities;
+
+public class Service : Entity
 {
     public string Name { get; set; }
     public string Description { get; set; }
