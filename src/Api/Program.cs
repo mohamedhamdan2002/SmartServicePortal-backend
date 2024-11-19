@@ -1,5 +1,6 @@
 using Api.Extensions;
 using Api.Utilities;
+using Infrastructure.Hubs.Notification;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,10 +20,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
-app.UseCors(ApiConstants.MyAppPolicy);
+app.UseCors(Constants.MyAppPolicy);
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseStaticFiles();
 
 app.MapControllers();
+app.MapHub<NotificationHub>("api/notification-hub");
 
 app.Run();
