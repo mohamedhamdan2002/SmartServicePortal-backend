@@ -1,7 +1,7 @@
 ﻿using Api.Utilities;
 using Application.Dtos.CategoryDtos;
 using Application.Services.Contracts;
-using Application.Specifications;
+using Application.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
