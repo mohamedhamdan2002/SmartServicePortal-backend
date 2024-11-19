@@ -9,9 +9,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Infrastructure;
 using Infrastructure.Data;
 using System.Text;
+using System.Runtime.CompilerServices;
+using Application.Interfaces;
+using Infrastructure.Hubs.Notification;
+using Microsoft.AspNetCore.SignalR;
+using Domain.Interfaces;
+using Infrastructure.Repositories;
 
 namespace Api.Extensions;
 
@@ -26,13 +31,17 @@ public static class ServiceCollectionExtensions
         services.ConfigurePolicyCors();
         services.ConfigureSwagger();
         services.ConfigureGlobalExcptionHandler();
-        services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+        services.AddSignalR();
+        //services.AddSingleton<IUserIdProvider>();
+        services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
         services.AddScoped<IRepositoryManager, RepositoryManager>();
         services.AddScoped<IServiceService, ServiceService>();
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IReviewService, ReviewService>();
+        //services.AddScoped<INotificationHub, NotificationHub>();
+        services.AddScoped<INotificationService, NotificationService>();
         return services;
     }
     private static void ConfigureAppDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -41,7 +50,7 @@ public static class ServiceCollectionExtensions
         {
             options.UseSqlServer(
                 configuration.GetConnectionString(
-                    ApiConstants.DefaultConnection
+                    Constants.DefaultConnection
                  )
             );
         });
@@ -55,9 +64,9 @@ public static class ServiceCollectionExtensions
     {
         services.AddCors(options =>
         {
-            options.AddPolicy(ApiConstants.MyAppPolicy, builder =>
+            options.AddPolicy(Constants.MyAppPolicy, builder =>
             {
-                builder.AllowAnyOrigin()
+                builder.WithOrigins("http://localhost:4200", "http://localhost:4300")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
             });
@@ -67,7 +76,8 @@ public static class ServiceCollectionExtensions
     private static void ConfigureIdentity(this IServiceCollection services)
     {
         services.AddIdentity<User, IdentityRole>()
-            .AddEntityFrameworkStores<AppDbContext>();
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
     }
     private static void ConfigureJWT(this IServiceCollection services, IConfiguration configuration)
     {
@@ -89,6 +99,21 @@ public static class ServiceCollectionExtensions
                 ValidIssuer = jwtSettings.ValidIssuer,
                 ValidAudience = jwtSettings.ValidAudience,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecreteKey))
+            };
+            opt.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = (context) =>
+                {
+                    var accessToken = context.Request.Query["access_token"];
+                    var path = context.HttpContext.Request.Path;
+                    if (!string.IsNullOrEmpty(accessToken) &&
+                        path.StartsWithSegments("/api/notification-hub")
+                    )
+                    {
+                        context.Token = accessToken;
+                    }
+                    return Task.CompletedTask;
+                }
             };
         });
     }
