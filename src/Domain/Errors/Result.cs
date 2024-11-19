@@ -1,9 +1,10 @@
 ﻿namespace Domain.Errors;
 
-public class Result
+public class Result  
 {
     protected Result(bool isSuccess, Error error)
     {
+
         if (isSuccess && error != Error.None
           || !isSuccess && error == Error.None)
         {
@@ -17,15 +18,17 @@ public class Result
     public Error Error { get; }
     public static Result Success() => new(true, Error.None);
     public static Result Failure(Error error) => new(false, error);
+    public static Result<TResult> Success<TResult>(TResult data) => new(data);
+    public static Result<TResult> Fail<TResult>(Error error) => new(error);
 }
+
 public class Result<TResult> : Result
 {
     public TResult Data { get; }
-    private Result(TResult data)
+    public Result(TResult data)
         : base(true, Error.None)
     {
         Data = data;
     }
-    public static Result<TResult> Success(TResult data) => new(data);
-
+    public Result(Error error) : base(false, error) { }
 }
