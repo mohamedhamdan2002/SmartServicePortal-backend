@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Domain.Abstractions;
+﻿using Domain.Abstractions;
 
-namespace Domain.Entities
+namespace Domain.Entities;
+
+public class UsersConnection : Entity
 {
-    public class UsersConnection : Entity
-    {
-        public string UserId { get; set; }
-        public string ConnectionId { get; set; }
-    }
+    public required string UserId { get; set; }
+    public required string ConnectionId { get; set; }
 }

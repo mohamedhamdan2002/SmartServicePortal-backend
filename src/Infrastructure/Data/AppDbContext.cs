@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<Category> Categories { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
     public DbSet<Review> Reviews { get; set; }
+    public DbSet<UsersConnection> UsersConnections { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options) { }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
