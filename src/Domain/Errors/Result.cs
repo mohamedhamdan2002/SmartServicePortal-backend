@@ -17,7 +17,7 @@ public class Result
     public bool IsFailure => !IsSuccess;
     public Error Error { get; }
     public static Result Success() => new(true, Error.None);
-    public static Result Failure(Error error) => new(false, error);
+    public static Result Fail(Error error) => new(false, error);
     public static Result<TResult> Success<TResult>(TResult data) => new(data);
     public static Result<TResult> Fail<TResult>(Error error) => new(error);
 }

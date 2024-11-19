@@ -1,7 +1,7 @@
 ﻿using Api.Utilities;
 using Application.Dtos.CategoryDtos;
 using Application.Services.Contracts;
-using Domain.Errors;
+using Application.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,16 +18,16 @@ public class CategoriesController : BaseApiController
     }
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<CategoryDto>>> GetAllCategories()
+    public async Task<ActionResult<IEnumerable<CategoryDto>>> GetAllCategories()
     {
         var result = await _categoryService.GetAllCategoriesAsync();
-        return HandleResult<IReadOnlyList<CategoryDto>>(result);
+        return HandleResult(result);
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<CategoryDto>> GetCategoryById(int id)
     {
         var result = await _categoryService.GetCategoryByIdAsync(id);
-        return HandleResult<CategoryDto>(result);
+        return HandleResult(result);
     }
 
     [HttpPost]
@@ -35,18 +35,24 @@ public class CategoriesController : BaseApiController
     public async Task<ActionResult<CategoryDto>> CreateCategory(CategoryForCreateDto category)
     {
         var result = await _categoryService.CreateCategoryAsync(category);
-        return HandleResult<CategoryDto>(result, ActionEnum.CreatedAtResult);
+        return HandleResult(result, ActionEnum.CreatedAtResult);
     }
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, CategoryForUpdateDto category)
     {
         var result = await _categoryService.UpdateCategoryAsync(id, category);
-        return HandleResult<Result>(result, ActionEnum.NoContentResult);
+        return HandleResult(result);
     }
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
         var result = await _categoryService.DeleteCategoryAsync(id);
-        return HandleResult<Result>(result, ActionEnum.NoContentResult);
+        return HandleResult(result);
+    }
+    [HttpDelete("collection")]
+    public async Task<IActionResult> DeleteCollectionOfCategories(CollectionOfIds categoriesIds)
+    {
+        var result = await _categoryService.DeleteCategoriesAsync(categoriesIds);
+        return HandleResult(result);
     }
 }
