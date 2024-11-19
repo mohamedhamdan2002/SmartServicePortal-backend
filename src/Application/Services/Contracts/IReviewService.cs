@@ -5,9 +5,6 @@ namespace Application.Services.Contracts;
 
 public interface IReviewService
 {
-    Task<Result> GetAllReviewsAsync(int? serviceId);
-    Task<Result> GetReviewById(int Id);
-    Task<Result> CreateReviewAsync(string customerId, ReviewForCreateDto ReviewForCreate);
-    Task<Result> UpdateReviewAsync(int id, ReviewForUpdateDto ReviewForUpdate);
-    Task<Result> DeleteReviewAsync(int id);
+    Task<Result<IEnumerable<ReviewDto>>> GetAllReviewsAsync(int? serviceId);
+    Task<Result<ReviewDto>> CreateReviewAsync(string customerId, ReviewForCreateDto ReviewForCreate);
 }

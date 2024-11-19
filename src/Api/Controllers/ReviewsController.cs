@@ -3,6 +3,8 @@ using Application.Dtos.ReviewDtos;
 using Application.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace Api.Controllers;
 
@@ -16,16 +18,20 @@ public class ReviewsController : BaseApiController
 
     [HttpPost]
     [Authorize]
-    [BindFromClaims(Claim = "uid", ParameterName = nameof(customerId))]
-    public async Task<ActionResult<ReviewDto>> CreateReview(string? customerId, ReviewForCreateDto createDto)
+    [BindFromClaims(Claim = JwtRegisteredClaimNames.UniqueName, ParameterName = nameof(customerId))]
+    public async Task<ActionResult<ReviewDto>> CreateReview(
+        [BindNever] string customerId,
+        ReviewForCreateDto createDto
+        )
     {
-        var result = await _reviewService.CreateReviewAsync(customerId!, createDto);
-        return HandleResult<ReviewDto>(result);
+        var result = await _reviewService.CreateReviewAsync(customerId, createDto);
+        return HandleResult(result);
     }
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<ReviewDto>>> GetReviews(int? serviceId)
     {
         var result = await _reviewService.GetAllReviewsAsync(serviceId);
-        return HandleResult<IEnumerable<ReviewDto>>(result);
+        return HandleResult(result);
     }
 }

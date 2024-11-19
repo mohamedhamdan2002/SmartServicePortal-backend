@@ -1,7 +1,6 @@
 ﻿using Application.Dtos.ReviewDtos;
 using Application.Services.Contracts;
 using Application.Specifications;
-using Domain.Entities;
 using Domain.Errors;
 using Domain.Repositories;
 
@@ -14,22 +13,12 @@ public class ReviewService : IReviewService
     {
         _repositoryManager = repositoryManager;
     }
-    public async Task<Result> CreateReviewAsync(string customerId, ReviewForCreateDto reviewForCreate)
+    public async Task<Result<ReviewDto>> CreateReviewAsync(string customerId, ReviewForCreateDto reviewForCreate)
     {
         var service = await _repositoryManager.ServiceRepository.GetByIdAsync(reviewForCreate.ServiceId);
         if (customerId is null || service is null)
-        {
-            return ApplicationErrors.BadRequestError;
-        }
-        var review = new Review
-        {
-            Title = reviewForCreate.Title,
-            AsAnonymous = reviewForCreate.AsAnonymous,
-            Comment = reviewForCreate.Comment,
-            CustomerId = customerId,
-            Rate = reviewForCreate.Rate,
-            ServiceId = reviewForCreate.ServiceId
-        };
+            return Result.Fail<ReviewDto>(ApplicationErrors.BadRequestError);
+        var review = reviewForCreate.ToEntity(customerId);
         _repositoryManager.ReviewRepository.Create(review);
         await _repositoryManager.SaveChangesAsync();
         var reviewDto = new ReviewDto
@@ -41,28 +30,13 @@ public class ReviewService : IReviewService
             Title = review.Title,
             CreatedAt = review.CreatedAt
         };
-        return Result<ReviewDto>.Success(reviewDto);
+        return Result.Success(reviewDto);
     }
 
-    public Task<Result> DeleteReviewAsync(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<Result> GetAllReviewsAsync(int? serviceId)
+    public async Task<Result<IEnumerable<ReviewDto>>> GetAllReviewsAsync(int? serviceId)
     {
         var spec = new ReviewSpecification(serviceId);
         var reviews = await _repositoryManager.ReviewRepository.GetAllAsync(spec);
-        return Result<IEnumerable<ReviewDto>>.Success(reviews);
-    }
-
-    public Task<Result> GetReviewById(int Id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task<Result> UpdateReviewAsync(int id, ReviewForUpdateDto ReviewForUpdate)
-    {
-        throw new NotImplementedException();
+        return Result.Success(reviews);
     }
 }

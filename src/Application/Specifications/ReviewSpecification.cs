@@ -4,7 +4,7 @@ using Domain.Specifications;
 
 namespace Application.Specifications;
 
-public class ReviewSpecification : SpecificationWithResultType<Review, ReviewDto>
+public class ReviewSpecification : Specification<Review, ReviewDto>
 {
     public ReviewSpecification(int? serviceId)
         : base(review => !serviceId.HasValue || review.ServiceId == serviceId)
