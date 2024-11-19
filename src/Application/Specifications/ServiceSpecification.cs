@@ -1,15 +1,16 @@
-﻿using Application.Dtos.ServiceDtos;
+﻿using Api.Utilities;
+using Application.Dtos.ServiceDtos;
 using Domain.Specifications;
 
 namespace Application.Specifications;
 
-public class ServiceSpecification : SpecificationWithResultType<Domain.Entities.Service, ServiceDto>
+public class ServiceSpecification : Specification<Domain.Entities.Service, ServiceDto>
 {
     public ServiceSpecification(SpecificationParameters specParams)
         : base(
             service =>
                         (string.IsNullOrEmpty(specParams.Search) || service.Name.ToLower().Contains(specParams.Search!)) &&
-                        (!(specParams.CategoriesIds != null) || specParams.CategoriesIds.Values.Any(value => value == service.CategoryId)) 
+                        (!(specParams.CategoriesIds != null) || specParams.CategoriesIds.Values.Any(value => value == service.CategoryId))
         )
     {
         AddInclude(service => service.Category);
@@ -43,7 +44,7 @@ public class ServiceSpecification : SpecificationWithResultType<Domain.Entities.
             Name = service.Name,
             Cost = service.Cost,
             Description = service.Description,
-            PictureUrl = $"http://localhost:5217/{service.PictureUrl}",
+            PictureUrl = $"{Constants.BaseUrl}{service.PictureUrl}",
             CategoryId = service.CategoryId,
         };
     }
@@ -53,7 +54,4 @@ public class ServiceSpecification : SpecificationWithResultType<Domain.Entities.
         AddInclude(service => service.Category);
         AddSelector();
     }
-
-    
-
 }

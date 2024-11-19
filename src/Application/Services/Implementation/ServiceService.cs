@@ -1,4 +1,5 @@
-﻿using Application.Dtos.ServiceDtos;
+﻿using Api.Utilities;
+using Application.Dtos.ServiceDtos;
 using Application.Services.Contracts;
 using Application.Specifications;
 using Application.Utilities;
@@ -11,7 +12,6 @@ namespace Application.Services.Implementation;
 
 public class ServiceService : IServiceService
 {
-    private const string baseUrl = "http://localhost:5217/";
     private readonly IRepositoryManager _repositoryManager;
     private readonly IWebHostEnvironment _env;
 
@@ -21,22 +21,15 @@ public class ServiceService : IServiceService
         _env = env;
     }
 
-    public async Task<Result> CreateServiceAsync(ServiceForCreateDto serviceForCreate)
+    public async Task<Result<ServiceDto>> CreateServiceAsync(ServiceForCreateDto serviceForCreate)
     {
         var category = await _repositoryManager.CategoryRepository.GetByIdAsync(serviceForCreate.CategoryId);
         if (category is null)
-            return ApplicationErrors.BadRequestError;
+            return Result.Fail<ServiceDto>(ApplicationErrors.BadRequestError);
         var pictureUrl = await HandleServicePictureAsync(serviceForCreate.Picture);
         if (pictureUrl == string.Empty)
-            return ApplicationErrors.BadRequestError;
-        var service = new Domain.Entities.Service()
-        {
-            CategoryId = category.Id,
-            Cost = serviceForCreate.Cost,
-            Description = serviceForCreate.Description,
-            PictureUrl = pictureUrl,
-            Name = serviceForCreate.Name
-        };
+            return Result.Fail<ServiceDto>(ApplicationErrors.BadRequestError);
+        var service = serviceForCreate.ToEntity(pictureUrl: pictureUrl);
         _repositoryManager.ServiceRepository.Create(service);
         await _repositoryManager.SaveChangesAsync();
         var serviceDto = new ServiceDto
@@ -45,26 +38,25 @@ public class ServiceService : IServiceService
             Name = service.Name,
             Category = category.Name,
             CategoryId = category.Id,
-            PictureUrl = $"{baseUrl}{service.PictureUrl}",
+            PictureUrl = $"{Constants.BaseUrl}{service.PictureUrl}",
             Description = service.Description,
             Cost = service.Cost
         };
-        return Result<ServiceDto>.Success(serviceDto);
-
+        return Result.Success(serviceDto);
     }
 
     public async Task<Result> DeleteServiceAsync(int id)
     {
         var service = await _repositoryManager.ServiceRepository.GetByIdAsync(id);
         if (service is null)
-            return ApplicationErrors.BadRequestError;
+            return Result.Fail(ApplicationErrors.BadRequestError);
         DeleteServicePicture(service.PictureUrl);
         _repositoryManager.ServiceRepository.Delete(service);
         await _repositoryManager.SaveChangesAsync();
         return Result.Success();
     }
 
-    public async Task<Result> GetAllServicesAsync(SpecificationParameters specParams)
+    public async Task<Result<Pagination<ServiceDto>>> GetAllServicesAsync(SpecificationParameters specParams)
     {
         var spec = new ServiceSpecification(specParams);
         var services = await _repositoryManager.ServiceRepository.GetAllAsync(spec);
@@ -75,40 +67,37 @@ public class ServiceService : IServiceService
             Data = services.ToList(),
             PageSize = specParams.PageSize,
             PageIndex = specParams.PageIndex,
-            Count = count,
+            Count = 20,
         };
-        return Result<Pagination<ServiceDto>>.Success(data);
+        return Result.Success(data);
     }
 
-    public async Task<Result> GetServiceById(int id)
+    public async Task<Result<ServiceDto>> GetServiceById(int id)
     {
         var spec = new ServiceSpecification(id);
         var service = await _repositoryManager.ServiceRepository.GetBySpecAsync(spec);
         if (service is null)
-            return ApplicationErrors.NotFoundError;
-        return Result<ServiceDto>.Success(service);
+            return Result.Fail<ServiceDto>(ApplicationErrors.NotFoundError);
+        return Result.Success(service);
     }
 
     public async Task<Result> UpdateServiceAsync(int id, ServiceForUpdateDto serviceForUpdate)
     {
         var service = await _repositoryManager.ServiceRepository.GetByIdAsync(id);
         if (service is null)
-            return ApplicationErrors.BadRequestError;
+            return Result.Fail(ApplicationErrors.BadRequestError);
         if (service.CategoryId != serviceForUpdate.CategoryId)
         {
             var category = await _repositoryManager.CategoryRepository.GetByIdAsync(serviceForUpdate.CategoryId);
             if (category is null)
-                return ApplicationErrors.BadRequestError;
+                return Result.Fail(ApplicationErrors.BadRequestError);
             service.CategoryId = category.Id;
         }
         DeleteServicePicture(service.PictureUrl);
         var pictureUrl = await HandleServicePictureAsync(serviceForUpdate.Picture);
         if (pictureUrl == string.Empty)
-            return ApplicationErrors.BadRequestError;
-        service.Name = serviceForUpdate.Name;
-        service.Cost = serviceForUpdate.Cost;
-        service.PictureUrl = pictureUrl;
-        service.Description = serviceForUpdate.Description;
+            return Result.Fail(ApplicationErrors.BadRequestError);
+        serviceForUpdate.UpdateEntity(service, pictureUrl);
         await _repositoryManager.SaveChangesAsync();
         return Result.Success();
     }
@@ -131,5 +120,11 @@ public class ServiceService : IServiceService
         var filePath = Path.Combine(_env.WebRootPath, pictureUrl);
         if (File.Exists(filePath))
             File.Delete(filePath);
+    }
+
+    public async Task<Result> DeleteServicesAsync(CollectionOfIds servicesIds)
+    {
+        await _repositoryManager.ServiceRepository.DeleteRangeAsync(servicesIds.Values);
+        return Result.Success();
     }
 }
