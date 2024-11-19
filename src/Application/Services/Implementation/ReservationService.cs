@@ -1,7 +1,10 @@
-﻿using Application.Dtos.ReservationDtos;
+﻿using Application.Dtos.NotificationDtos;
+using Application.Dtos.ReservationDtos;
+using Application.Interfaces;
 using Application.Services.Contracts;
 using Application.Specifications;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Errors;
 using Domain.Repositories;
 
@@ -10,17 +13,19 @@ namespace Application.Services.Implementation;
 public class ReservationService : IReservationService
 {
     private readonly IRepositoryManager _repositoryManager;
+    private readonly INotificationService _notificationService;
 
-    public ReservationService(IRepositoryManager repositoryManager)
+    public ReservationService(IRepositoryManager repositoryManager, INotificationService notificationService)
     {
         _repositoryManager = repositoryManager;
+        _notificationService = notificationService;
     }
 
-    public async Task<Result> CreateReservationAsync(int serviceId, string customerId, ReservationForCreationDto reservationForCreationDto)
+    public async Task<Result<ReservationDto>> CreateReservationAsync(int serviceId, string customerId, ReservationForCreationDto reservationForCreationDto)
     {
         var service = await _repositoryManager.ServiceRepository.GetByIdAsync(serviceId);
         if (service is null)
-            return ApplicationErrors.BadRequestError;
+            return Result.Fail<ReservationDto>(ApplicationErrors.BadRequestError);
         var reservation = new Reservation
         {
             CustomerId = customerId,
@@ -55,22 +60,46 @@ public class ReservationService : IReservationService
             Service = service.Name,
             Status = reservation.Status.ToString()
         };
-        return Result<ReservationDto>.Success(reservationDto);
+        return Result.Success(reservationDto);
     }
 
-    public async Task<Result> GetAllReservations()
+    public async Task<Result<IEnumerable<ReservationDetailsDto>>> GetAllReservationsAsync()
     {
         var spec = new ReservationWithDetailsSpecification();
         var resvations = await _repositoryManager.ReservationRepository.GetAllAsync(spec);
-        return Result<IEnumerable<ReservationDetailsDto>>.Success(resvations);
+        return Result.Success(resvations);
     }
 
-    public async Task<Result> GetReservationsForUserAsync(string customerId)
+    public async Task<Result<IEnumerable<ReservationDto>>> GetReservationsForUserAsync(string customerId)
     {
         if (customerId is null)
-            return ApplicationErrors.BadRequestError;
+            return Result.Fail<IEnumerable<ReservationDto>>(ApplicationErrors.BadRequestError);
         var spec = new ReservationSpecification(customerId);
         var reservations = await _repositoryManager.ReservationRepository.GetAllAsync(spec);
-        return Result<IEnumerable<ReservationDto>>.Success(reservations);
+        return Result.Success(reservations);
+    }
+
+    public async Task<Result> RemoveReservationAsync(int id)
+    {
+        var reservation = await _repositoryManager.ReservationRepository.GetByIdAsync(id);
+        if (reservation == null)
+            return Result.Fail(ApplicationErrors.BadRequestError);
+        _repositoryManager.ReservationRepository.Delete(reservation);
+        await _repositoryManager.SaveChangesAsync();
+        return Result.Success();
+    }
+
+    public async Task<Result> UpdateReservationStatusAsync(int id, StatusEnum status)
+    {
+        var spec = new ReservationWithServiceSpecification(id);
+        var reservation = await _repositoryManager.ReservationRepository.GetBySpecAsync(spec);
+        if (reservation == null)
+            return Result.Fail(ApplicationErrors.BadRequestError);
+        reservation.ChangeReservationStatus(status);
+        await _repositoryManager.SaveChangesAsync();
+        //await _notificationService.NotifyBy(reservation.CustomerId, reservation.Service.Name, reservation.Status);
+        var notificationDto = new ReservationNotificationDto { Id = id, Service = reservation.Service.Name, Status = reservation.Status.ToString() };
+        await _notificationService.NotifyBy(reservation.CustomerId, notificationDto);
+        return Result.Success();
     }
 }

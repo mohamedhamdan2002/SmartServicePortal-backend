@@ -3,6 +3,7 @@
 public record ReservationDetailsDto : ReservationDto
 {
     public string CustomerName { get; init; }
+    public string? CustomerId { get; init; }
     public string CustomerEmail { get; init; }
     public string CustomerAddress { get; init; }
     public string ProblemDescription { get; init; }

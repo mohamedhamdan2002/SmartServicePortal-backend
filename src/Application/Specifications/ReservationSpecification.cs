@@ -2,10 +2,9 @@
 using Domain.Entities;
 using Domain.Specifications;
 
-
 namespace Application.Specifications;
 
-public class ReservationSpecification : SpecificationWithResultType<Reservation, ReservationDto>
+public class ReservationSpecification : Specification<Reservation, ReservationDto>
 {
     public ReservationSpecification(string customerId)
         : base(reservation => reservation.CustomerId == customerId)
@@ -19,4 +18,5 @@ public class ReservationSpecification : SpecificationWithResultType<Reservation,
             Status = reservation.Status.ToString()
         };
     }
+
 }

@@ -4,7 +4,7 @@ using Domain.Specifications;
 
 namespace Application.Specifications;
 
-public class ReservationWithDetailsSpecification : SpecificationWithResultType<Reservation, ReservationDetailsDto>
+public class ReservationWithDetailsSpecification : Specification<Reservation, ReservationDetailsDto>
 {
     public ReservationWithDetailsSpecification()
     {
