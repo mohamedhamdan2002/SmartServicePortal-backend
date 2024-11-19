@@ -4,7 +4,7 @@ using Domain.Specifications;
 
 namespace Application.Specifications;
 
-public class UserSpecification : SpecificationWithResultType<User, UserProfileDto>
+public class UserSpecification : Specification<User, UserProfileDto>
 {
     public UserSpecification(string email) : base(user => user.Email == email)
     {

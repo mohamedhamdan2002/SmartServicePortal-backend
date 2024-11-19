@@ -18,34 +18,29 @@ public class AccountsController : BaseApiController
     public async Task<ActionResult<UserDto>> Register([FromBody] UserForRegisterDto registerDto)
     {
         var result = await _authService.RegisterAsync(registerDto);
-
-        //if (result.IsFailure)
-        //    return HandleError(result.Error);
-
-        //return Ok(result.GetData<UserDto>());
-        return HandleResult<UserDto>(result);
+        return HandleResult(result);
     }
 
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login([FromBody] UserForLoginDto loginDto)
     {
         var result = await _authService.LoginAsync(loginDto);
-
-        //if (result.IsFailure)
-        //    return HandleError(result.Error);
-
-        //return Ok(result.GetData<UserDto>());
-        return HandleResult<UserDto>(result);
+        return HandleResult(result);
     }
 
-    [HttpGet("profile")]
     [Authorize]
+    [HttpGet("profile")]
     public async Task<ActionResult<UserProfileDto>> GetProfileForCurrentUser()
     {
         var email = User.FindFirstValue(ClaimTypes.Email);
         var result = await _authService.GetUserByEmailAsync(email!);
-        return HandleResult<UserProfileDto>(result);
+        return HandleResult(result);
     }
 
-
+    [HttpGet("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail([FromQuery] string email, [FromQuery] string token)
+    {
+        var result = await _authService.ConfirmEmailAsync(email, token);
+        return HandleResult(result);
+    }
 }

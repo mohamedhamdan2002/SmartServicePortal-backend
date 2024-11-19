@@ -5,9 +5,10 @@ namespace Application.Services.Contracts;
 
 public interface IAuthService
 {
-    Task<Result> RegisterAsync(UserForRegisterDto userForRegisterDto);
+    Task<Result<UserDto>> RegisterAsync(UserForRegisterDto userForRegisterDto);
     Task<Result> LoginAsync(UserForLoginDto userForLoginDto);
     Task<bool> CheckIfEmailExists(string email);
-    Task<Result> GetUserByEmailAsync(string email);
+    Task<Result<UserProfileDto>> GetUserByEmailAsync(string email);
+    Task<Result> ConfirmEmailAsync(string email, string confirmToken);
 
 }

@@ -1,12 +1,27 @@
-﻿namespace Application.Dtos.UserDtos;
+﻿using Domain.Entities;
+
+namespace Application.Dtos.UserDtos;
 
 public record UserForRegisterDto
 {
-    public string FirstName { get; init; }
-    public string LastName { get; init; }
-    public string Email { get; init; }
-    public string Password { get; init; }
-    public string Address { get; init; }
-    public string PhoneNumber { get; init; }
+    public required string FirstName { get; init; }
+    public required string LastName { get; init; }
+    public required string Email { get; init; }
+    public required string Password { get; init; }
+    public required string Address { get; init; }
+    public required string PhoneNumber { get; init; }
+
+    public User ToEntity()
+    {
+        return new User
+        {
+            FirstName = this.FirstName,
+            LastName = this.LastName,
+            Email = this.Email,
+            UserName = this.Email.Split('@')[0],
+            PhoneNumber = this.PhoneNumber,
+            Address = this.Address
+        };
+    }
 
 }
